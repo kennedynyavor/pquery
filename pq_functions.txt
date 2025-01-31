@@ -1,0 +1,24 @@
+(folderPath as text,ext) as table =>
+let
+    // Get list of all files in folder
+    Source = Folder.Files(folderPath),
+    
+    // Filter for CSV files only
+    FilterCsv = Table.SelectRows(Source, each [Extension] = ext),
+    
+    // Add column with CSV data (promoting headers)
+    GetCsvData = Table.AddColumn(
+        FilterCsv,
+        "CSVData",
+        each Table.PromoteHeaders(
+            Csv.Document(
+                [Content],
+                [Delimiter = ",", Encoding = 1252, QuoteStyle = QuoteStyle.None]
+            )
+        )
+    ),
+    
+    // Combine all tables from CSVData column
+    CombineTables = Table.Combine(GetCsvData[CSVData])
+in
+    CombineTables
