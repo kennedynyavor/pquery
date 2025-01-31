@@ -21,5 +21,8 @@ let
     
     // Combine all tables from CSVData column
     CombineTables = Table.Combine(GetCsvData[CSVData])
+
+    // Remove duplicate rows across all columns
+    RemoveDuplicates = Table.Distinct(CombineTables)
 in
-    CombineTables
+    RemoveDuplicates
