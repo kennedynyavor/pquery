@@ -1,3 +1,4 @@
+// A function that reads all the files in a folder 
 (folderPath as text,ext) as table =>
 let
     // Get list of all files in folder
